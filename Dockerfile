@@ -31,9 +31,13 @@ COPY client/ ./client/
 # Snapshot storage dir (ephemeral on Cloud Run — mount a volume for persistence)
 RUN mkdir -p /app/data/snapshots
 
-# Cloud Run injects PORT; default to 3000
+# Cloud Run injects PORT; default to 8080 for Cloud Run compatibility
 ENV NODE_ENV=production
 ENV PORT=8080
+# These will be overridden by --env-vars-file or --set-env-vars
+ENV APIFY_API_TOKEN=""
+ENV API_SECRET_KEY=""
+ENV APIFY_ACTOR_ID="emeraldpathways/custom-web-scraper"
 
 EXPOSE 8080
 

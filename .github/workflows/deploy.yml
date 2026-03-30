@@ -1,0 +1,57 @@
+name: Deploy to Google Cloud Run
+
+on:
+  push:
+    branches: [master, main]
+
+env:
+  PROJECT_ID: emailwebsearch
+  SERVICE_NAME: emailwebsearch
+  REGION: us-central1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/732497578431/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-deployer@emailwebsearch.iam.gserviceaccount.com'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker gcr.io --quiet
+
+      - name: Build and Push Container
+        run: |
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          image: gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          env_vars: |
+            NODE_ENV=production
+            APIFY_ACTOR_ID=emeraldpathways/custom-web-scraper
+          secrets: |
+            APIFY_API_TOKEN=apify-api-token:latest
+            API_SECRET_KEY=api-secret-key:latest
+
+      - name: Show Output
+        run: echo "Deployed to ${{ steps.deploy.outputs.url }}"

@@ -1,0 +1,15 @@
+{
+  "name": "custom-web-scraper",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Flexible web scraper built with Playwright and Crawlee",
+  "dependencies": {
+    "apify": "^3.1.10",
+    "crawlee": "^3.8.1",
+    "playwright": "^1.42.0"
+  },
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

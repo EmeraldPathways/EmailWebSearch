@@ -1,0 +1,12 @@
+node_modules/
+apify-actor/node_modules/
+dist/
+apify-actor/dist/
+.env
+*.js.map
+data/snapshots/
+data/*.db
+data/*.db-shm
+data/*.db-wal
+.claude/settings.local.json
+CLAUDE.local.md

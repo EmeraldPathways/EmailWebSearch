@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EmailWebSearch</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+      EmailWebSearch
+    </div>
+    <div class="nav-links">
+      <button class="nav-link active" data-view="home">Extract</button>
+      <button class="nav-link" data-view="history">History</button>
+    </div>
+    <button id="btn-theme-toggle" class="btn-theme-toggle" title="Toggle dark/light mode">🌙</button>
+    <div class="nav-token">
+      <input type="password" id="api-token" placeholder="API token" />
+    </div>
+  </nav>
+
+  <main>
+    <!-- Home / Extract View -->
+    <section id="view-home" class="view active">
+      <div class="search-card">
+        <h1>Find Emails & Contacts</h1>
+        <p class="subtitle">Enter one or more website URLs to extract emails, phone numbers, and social links.</p>
+
+        <div class="search-group">
+          <label>Website URLs</label>
+          <textarea id="url-input" rows="6" placeholder="https://example.com&#10;https://another-site.com"></textarea>
+          <small class="hint">One URL per line. Up to 20 URLs.</small>
+        </div>
+
+        <div class="search-actions">
+          <button id="btn-extract" class="btn btn-primary">Start Extraction</button>
+        </div>
+
+        <div id="recent-extractions" class="recent-searches hidden">
+          <span class="recent-label">Recent:</span>
+          <div id="recent-chips" class="chips"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result View -->
+    <section id="view-result" class="view hidden">
+      <div class="view-header">
+        <button class="btn-back" data-view="home">← Back</button>
+        <h2>Extraction Results</h2>
+      </div>
+      <div id="result-content" class="result-content">
+        <div class="loading">Running extraction…</div>
+      </div>
+    </section>
+
+    <!-- History View -->
+    <section id="view-history" class="view hidden">
+      <div class="view-header">
+        <button class="btn-back" data-view="home">← Back</button>
+        <h2>Extraction History</h2>
+      </div>
+      <div id="history-content" class="history-content">
+        <div class="loading">Loading history…</div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+  <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/components/nav.js"></script>
+  <script type="module" src="/js/views/home.js"></script>
+  <script type="module" src="/js/views/result.js"></script>
+  <script type="module" src="/js/views/history.js"></script>
+</body>
+</html>

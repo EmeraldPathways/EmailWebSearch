@@ -1,0 +1,12 @@
+{
+  "actorSpecification": 1,
+  "name": "custom-web-scraper",
+  "title": "Custom Web Scraper",
+  "description": "A flexible web scraper built with Playwright and Crawlee. Extract any data using CSS selectors or a custom page function.",
+  "version": "1.0",
+  "meta": {
+    "templateId": "js-start"
+  },
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile"
+}

@@ -1,0 +1,65 @@
+{
+  "title": "Custom Web Scraper",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "List of URLs to start scraping from.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://example.com" }
+      ]
+    },
+    "linkSelector": {
+      "title": "Link Selector",
+      "type": "string",
+      "description": "CSS selector for links to follow. Set to empty string to disable following links.",
+      "editor": "textfield",
+      "default": "a[href]",
+      "nullable": true
+    },
+    "maxPagesPerCrawl": {
+      "title": "Max Pages Per Crawl",
+      "type": "integer",
+      "description": "Maximum number of pages the scraper will open. 0 means unlimited.",
+      "editor": "number",
+      "default": 10,
+      "minimum": 0
+    },
+    "selectors": {
+      "title": "CSS Selectors",
+      "type": "object",
+      "description": "Key-value pairs where the key is the field name and the value is a CSS selector. If omitted, the actor falls back to a default contact-info extraction.",
+      "editor": "json",
+      "prefill": {
+        "title": "h1",
+        "description": "meta[name=description]",
+        "emails": "a[href^='mailto:']"
+      },
+      "nullable": true
+    },
+    "pageFunction": {
+      "title": "Page Function",
+      "type": "string",
+      "description": "Optional custom async function body. Must return an object. Available arguments: request, page, log. Overrides CSS selectors if provided.",
+      "editor": "javascript",
+      "default": "return { title: await page.title(), url: request.url };",
+      "nullable": true
+    },
+    "proxyConfiguration": {
+      "title": "Proxy Configuration",
+      "type": "object",
+      "description": "Proxy settings for the crawler.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": true
+      },
+      "prefill": {
+        "useApifyProxy": true
+      }
+    }
+  },
+  "required": ["startUrls"]
+}
